@@ -1,0 +1,15 @@
+<div id="client-app" class="p-2 m-2 flex flex-col" >
+    <div class="flex flex-row gap-2 justify-around border-b pb-4">
+        <select class="w-1/4 p-2 border border-blue-800 bg-white text-blue-800 rounded">
+            <option v-for="currency in currencies" :value="currency.id">{currency.code}</option>
+        </select>
+        <select class="w-1/4 p-2 border border-blue-800 bg-white text-blue-800 rounded"></select>
+    </div>
+    <div class="flex flex-col border-b pb-4">
+        <p class="">{{message}}</p>
+    </div>
+    
+</div>
+<script>
+    App.mount('#client-app')
+</script>
