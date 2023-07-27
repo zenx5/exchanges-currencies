@@ -21,19 +21,26 @@ class ExchangesCurrencies {
         add_action( 'wp_ajax_update_rate', [__CLASS__, 'action_update_rate']);
         add_action( 'wp_ajax_add_change', [__CLASS__, 'action_add_change']);
         add_shortcode( 'exchange-app', [__CLASS__, 'client_app']);
-        add_action( 'wp_head', [__CLASS__, 'insert_resources']);
+
     }
 
-    public static function insert_resources() {
+    public static function client_app() {
+        $Change = new ExchangesDB('ex_exchanges');
+        $Currency = new ExchangesDB('ex_currencies');
+        $exchanges = $Change->get();
+        $currencies = $Currency->get();
         ?>
+            
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                window.exchanges = {
+                    currencies: <?=json_encode($currencies)?>,
+                    changes: <?=json_encode($exchanges)?>
+                }
+            </script>
             <script src="<?='/wp-content/plugins/exchanges-currencies/template/front/app.js'?>"></script>
         <?php
-    }  
-
-
-    public static function client_app() {
         include_once WP_PLUGIN_DIR.'/exchanges-currencies/template/front/app.html';
     }
 
