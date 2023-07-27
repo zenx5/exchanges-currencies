@@ -16,7 +16,7 @@ class ExchangesCurrencies {
 
     public static function init() {
         add_action( 'admin_menu', [__CLASS__, 'admin_menu']);
-        add_action( 'wp_ajax_update_founds', [__CLASS__, 'action_update_founds']);
+        add_action( 'wp_ajax_update_currency', [__CLASS__, 'action_update_currency']);
         add_action( 'wp_ajax_add_currency', [__CLASS__, 'action_add_currency']);
         add_action( 'wp_ajax_update_rate', [__CLASS__, 'action_update_rate']);
         add_action( 'wp_ajax_add_change', [__CLASS__, 'action_add_change']);
@@ -75,6 +75,7 @@ class ExchangesCurrencies {
             "code" => $_POST['code'],
             "symbol" => $_POST['symbol'],
             "founds" => $_POST['founds'],
+            "details" => $_POST['details'],
             "created_at" => date("Y-m-d")
         ];
         $Currency = new ExchangesDB('ex_currencies');
@@ -83,14 +84,16 @@ class ExchangesCurrencies {
         die();
     }
 
-    public static function action_update_founds() {
+    public static function action_update_currency() {
         $currency_id = $_POST['currency_id'];
         $founds = $_POST['founds'];
+        $details = $_POST['details'];
         $Currency = new ExchangesDB('ex_currencies');
-        $Currency->set($currency_id, ["founds" => $founds ]);
+        $Currency->set($currency_id, ["founds" => $founds, "details" => $details ]);
         echo json_encode([
             "currency_id" => $currency_id,
-            "founds" => $founds
+            "founds" => $founds,
+            "details" => $details
         ]);
         die();
     }

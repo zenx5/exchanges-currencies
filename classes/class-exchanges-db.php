@@ -45,6 +45,7 @@ class ExChangesDB {
             code varchar(30),
             symbol varchar(255),
             founds double precision,
+            details varchar(255),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id) )
             COLLATE {$collate}";
@@ -61,6 +62,8 @@ class ExChangesDB {
             currency_from bigint(20),
             currency_to bigint(20),
             rate float(8),
+            type boolean,
+            user_id bigint(20),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id) )
             COLLATE {$collate}";
@@ -133,7 +136,6 @@ class ExChangesDB {
             $this->insert( $this->name, $data );
         }
     }
-
 
 }
 
