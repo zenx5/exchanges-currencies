@@ -90,7 +90,7 @@
     jQuery('.button-update-currency').click( function(){
         const id = jQuery(this).data('id')
         const founds = jQuery(`input[name='found-${id}']`).val()
-        const details = jQuery(`input[name='details-${id}']`).val()
+        const details = jQuery(`textarea[name='details-${id}']`).val()
         fetch(ajaxurl, {
             method:'post',
             headers:{
