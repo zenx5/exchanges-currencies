@@ -17,7 +17,6 @@ class ExChangesDB {
         self::def_table__exchanges();
         self::def_table__rules();
         self::def_table__operation();
-        
     }
 
     public static function drop_all() {
@@ -45,6 +44,7 @@ class ExChangesDB {
             code varchar(30),
             symbol varchar(255),
             founds double precision,
+            details varchar(255),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id) )
             COLLATE {$collate}";
@@ -61,6 +61,8 @@ class ExChangesDB {
             currency_from bigint(20),
             currency_to bigint(20),
             rate float(8),
+            type boolean,
+            user_id bigint(20),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id) )
             COLLATE {$collate}";
@@ -76,7 +78,7 @@ class ExChangesDB {
             id bigint(20) NOT NULL AUTO_INCREMENT,
             relation varchar(5),
             deposit double precision,
-            value_format varchar(5),
+            type varchar(20),
             value float(8),
             exchange_id bigint(20),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -92,8 +94,10 @@ class ExChangesDB {
         $name_table = $prefix.'ex_operation';
         $sql = "CREATE TABLE IF NOT EXISTS {$name_table} (
             id bigint(20) NOT NULL AUTO_INCREMENT,
-            exchange_id bigint(20),
+            exchange_id bigint(20), 
+            mount double precision,
             reference varchar(30),
+            approved_by bigint(20),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id) )
             COLLATE {$collate}";
@@ -111,6 +115,7 @@ class ExChangesDB {
             "{$wpdb->prefix}{$table}",
             $data
         );
+        return $wpdb->insert_id;
     }
 
     public function update( $table, $data, $where ) {
@@ -129,11 +134,11 @@ class ExChangesDB {
     public function set( $id = 0, $data) {
         if( $id!=0 ) {
             $this->update( $this->name, $data, [ "id" => $id ] );
+            return $id;
         } else {
-            $this->insert( $this->name, $data );
+            return $this->insert( $this->name, $data );
         }
     }
-
 
 }
 

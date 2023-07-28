@@ -5,6 +5,19 @@
     .list tr{
         text-align:center;
     }
+    .list tr.currency:hover{
+        background-color: rgba(0,0,0,0.1);
+    }
+    .list .currency td {
+        padding-bottom: 5px;
+        border:1px solid rgba(0,0,0,0.4);
+    }
+    .list .details td {
+        padding-bottom: 10px;
+    }
+    .end {
+        border:none !important;
+    }
 </style>
 
 <h2>Crear Moneda</h2>
@@ -41,15 +54,20 @@
         <th>Acción</th>
     </tr>
     <?php foreach($currencies as $currency): ?>
-        <tr>
+        <tr class="currency">
             <td><?=$currency->name?></td>
             <td><?=$currency->code?></td>
             <td><?=$currency->symbol?></td>
             <td>
                 <input type="number" name="found-<?=$currency->id?>" value="<?=$currency->founds?>" />
             </td>
-            <td>
+            <td class="end">
                 <button class="button button-update-currency" type="button" data-id="<?=$currency->id?>">Actualizar</button>
+            </td>
+        </tr>
+        <tr class="details">
+            <td colspan="4">
+                <textarea rows="4" style="width:100%;" name="details-<?=$currency->id?>"><?=$currency->details?></textarea>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -64,7 +82,7 @@
             headers:{
                 'Content-Type':'application/x-www-form-urlencoded'
             },
-            body:`action=add_currency&name=${name}&code=${code}&symbol=${symbol}&founds=0`,
+            body:`action=add_currency&name=${name}&code=${code}&symbol=${symbol}&founds=0&details=`,
         })
             .then( response => response.json() )
             .then( json => console.log( json ) )
@@ -72,12 +90,13 @@
     jQuery('.button-update-currency').click( function(){
         const id = jQuery(this).data('id')
         const founds = jQuery(`input[name='found-${id}']`).val()
+        const details = jQuery(`input[name='details-${id}']`).val()
         fetch(ajaxurl, {
             method:'post',
             headers:{
                 'Content-Type':'application/x-www-form-urlencoded'
             },
-            body:`action=update_founds&currency_id=${id}&founds=${founds}`,
+            body:`action=update_currency&currency_id=${id}&founds=${founds}&details=${details}`,
         })
             .then( response => response.json() )
             .then( json => console.log( json ) )

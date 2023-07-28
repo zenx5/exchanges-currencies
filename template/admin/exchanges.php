@@ -1,45 +1,99 @@
-
 <style>
-    .list{
+    .form-container {
+        display:flex;
+        flex-direction:row;
+        gap:20%;
+    }
+    .list {
         width:100%;
     }
     .list tr{
         text-align:center;
     }
+    .list .rule {
+        background-color: rgba(0,0,0,0.05);
+        display: none;
+    }
+    .list .rule td{
+        
+    }
 </style>
 
 <h2>Crear Cambio</h2>
-<table>
-    <tr>
-        <th>Moneda de Origen</th>
-        <td>
-            <select name="currency_from_exchanges">
-                <?php foreach($currencies as $currency) : ?>
-                    <option value="<?=$currency->id?>"><?=$currency->code?></option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Moneda de Destino</th>
-        <td>
-            <select name="currency_to_exchanges">
-                <?php foreach($currencies as $currency) : ?>
-                    <option value="<?=$currency->id?>"><?=$currency->code?></option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Relacion</th>
-        <td>
-            <input type="number" name="rate_exchanges"/>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><button class="button button-create-exchange">Guardar</button></td>
-    </tr>
-</table>
+<div class="form-container">
+    <table>
+        <tr>
+            <th>Moneda de Origen</th>
+            <td>
+                <select name="currency_from_exchanges" style="width:100%;">
+                    <?php foreach($currencies as $currency) : ?>
+                        <option value="<?=$currency->id?>"><?=$currency->code?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Moneda de Destino</th>
+            <td>
+                <select name="currency_to_exchanges" style="width:100%;">
+                    <?php foreach($currencies as $currency) : ?>
+                        <option value="<?=$currency->id?>"><?=$currency->code?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Tasa</th>
+            <td>
+                <input type="number" name="rate_exchanges" style="width:100%;"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><button class="button button-create-exchange">Guardar</button></td>
+        </tr>
+    </table>
+    <table style="display:none">
+        <tr>
+            <th>Cambio</th>
+            <td>
+                <select>
+                    <option>Cambio 1</option>
+                    <option>Cambio 1</option>
+                    <option>Cambio 1</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Deposito</th>
+            <td>
+                <input type="number" />
+            </td>
+        </tr>
+        <tr>
+            <th>Relación</th>
+            <td>
+                <select>
+                    <option>Opcion 1</option>
+                    <option>Opcion 2</option>
+                    <option>Opcion 3</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Cantidad</th>
+            <td>
+                <input type="number" />
+                <select>
+                    <option>%</option>
+                    <option>$</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><button class="button button-create-exchange">Guardar</button></td>
+        </tr>
+    </table>
+</div>
 <h2>Cambios</h2>
 <table class="list">
     <tr>
@@ -58,6 +112,16 @@
             <td>
                 <button class="button button-update-exchange" type="button" data-id="<?=$change->id?>">Actualizar</button>
             </td>
+        </tr>
+        <tr class="rule">
+            <td></td>
+            <td>deposito > 100</td>
+            <td>-10%</td>
+        </tr>
+        <tr class="rule">
+            <td></td>
+            <td>deposito > 100</td>
+            <td>-10%</td>
         </tr>
     <?php endforeach; ?>
 </table>
