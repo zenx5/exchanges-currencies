@@ -129,7 +129,7 @@
     jQuery('.button-create-exchange').click( function(){
         const currency_from = jQuery(`select[name='currency_from_exchanges']`).val()
         const currency_to = jQuery(`select[name='currency_to_exchanges']`).val()
-        const rate = jQuery(`input[name='rates_exchanges']`).val()
+        const rate = jQuery(`input[name='rate_exchanges']`).val()
         fetch(ajaxurl, {
             method:'post',
             headers:{
