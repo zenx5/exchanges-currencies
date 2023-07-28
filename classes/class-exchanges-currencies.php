@@ -21,7 +21,40 @@ class ExchangesCurrencies {
         add_action( 'wp_ajax_update_rate', [__CLASS__, 'action_update_rate']);
         add_action( 'wp_ajax_add_change', [__CLASS__, 'action_add_change']);
         add_shortcode( 'exchange-app', [__CLASS__, 'client_app']);
+        add_action( 'wp_ajax_create_operation', [__CLASS__, 'action_create_operation']);
+        add_action( 'wp_ajax_update_operation', [__CLASS__, 'action_update_operation']);
+    }
 
+    public static function action_update_operation() {
+        if( isset($_POST['id']) ) {
+            $request = [];
+            if( isset($_POST["reference"]) ) {
+                $request["reference"] = $_POST["reference"];
+            }
+            if( isset($_POST["approved_by"]) ) {
+                $request["approved_by"] = $_POST["approved_by"];
+            }
+            $Operation = new ExchangesDB('ex_operation');
+            $Operation->set($_POST['id'], $request );
+            echo json_encode( $request );
+        } else {
+            echo json_encode([]);
+        }
+        die();
+    }
+
+    public static function action_create_operation() {
+        $request = [
+            "exchange_id" => $_POST["exchange_id"],
+            "mount" => $_POST["mount"],
+            "reference" => "",
+            "approved_by" => 0,
+            "created_at" => date("Y-m-d")
+        ];
+        $Operation = new ExchangesDB('ex_operation');
+        $request["id"] = $Operation->set(0, $request );
+        echo json_encode( $request );
+        die();
     }
 
     public static function client_app() {
@@ -30,7 +63,6 @@ class ExchangesCurrencies {
         $exchanges = $Change->get();
         $currencies = $Currency->get();
         ?>
-            
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
             <script>
