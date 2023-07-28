@@ -6,10 +6,12 @@
     ];
     $tab=1;
 
+    $Operation = new ExchangesDB('ex_operation');
     $Change = new ExchangesDB('ex_exchanges');
     $Currency = new ExchangesDB('ex_currencies');
     $currencies = $Currency->get();
     $changes = $Change->get();
+    $operations = $Operation->get();
 
     function name_currency($currencies, $id) {
         foreach( $currencies as $currency ) {
