@@ -120,8 +120,8 @@
             </td>
             <td>
                 <select name="type_exchange_<?=$change->id?>" style="width:100%;">
-                    <option value="1">directa</option>
-                    <option value="0">invertida</option>
+                    <option value="1" <?=$change->type ? "selected" : ""?>>directa</option>
+                    <option value="0" <?=$change->type ? "" : "selected"?>>invertida</option>
                 </select>
             </td>
             <td>
