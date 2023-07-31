@@ -96,6 +96,7 @@ class ExChangesDB {
             id bigint(20) NOT NULL AUTO_INCREMENT,
             exchange_id bigint(20), 
             mount double precision,
+            to_pay double precision,
             reference varchar(30),
             approved_by bigint(20),
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
