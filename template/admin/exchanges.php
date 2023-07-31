@@ -49,6 +49,15 @@
             </td>
         </tr>
         <tr>
+            <th>Tipo de Tasa</th>
+            <td>
+                <select name="type_exchanges" style="width:100%;">
+                    <option value="1">directa</option>
+                    <option value="0">invertida</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2"><button class="button button-create-exchange">Guardar</button></td>
         </tr>
     </table>
@@ -110,6 +119,12 @@
                 <input type="number" name="rate_exchange_<?=$change->id?>" value="<?=$change->rate?>"/>
             </td>
             <td>
+                <select name="type_exchange_<?=$change->id?>" style="width:100%;">
+                    <option value="1" <?=$change->type ? "selected" : ""?>>directa</option>
+                    <option value="0" <?=$change->type ? "" : "selected"?>>invertida</option>
+                </select>
+            </td>
+            <td>
                 <button class="button button-update-exchange" type="button" data-id="<?=$change->id?>">Actualizar</button>
             </td>
         </tr>
@@ -130,12 +145,13 @@
         const currency_from = jQuery(`select[name='currency_from_exchanges']`).val()
         const currency_to = jQuery(`select[name='currency_to_exchanges']`).val()
         const rate = jQuery(`input[name='rate_exchanges']`).val()
+        const type = jQuery(`select[name='type_exchanges']`).val()
         fetch(ajaxurl, {
             method:'post',
             headers:{
                 'Content-Type':'application/x-www-form-urlencoded'
             },
-            body:`action=add_change&currency_from=${currency_from}&currency_to=${currency_to}&rate=${rate}`,
+            body:`action=add_change&currency_from=${currency_from}&currency_to=${currency_to}&rate=${rate}&type=${type}`,
         })
             .then( response => response.json() )
             .then( json => console.log( json ) )
@@ -143,12 +159,13 @@
     jQuery('.button-update-exchange').click( function(){
         const id = jQuery(this).data('id')
         const rate = jQuery(`input[name='rate_exchange_${id}']`).val()
+        const type = jQuery(`input[name='type_exchange_${id}']`).val()
         fetch(ajaxurl, {
             method:'post',
             headers:{
                 'Content-Type':'application/x-www-form-urlencoded'
             },
-            body:`action=update_rate&exchange_id=${id}&rate=${rate}`,
+            body:`action=update_change&exchange_id=${id}&rate=${rate}&type=${type}`,
         })
             .then( response => response.json() )
             .then( json => console.log( json ) )

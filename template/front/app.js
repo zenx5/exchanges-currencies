@@ -22,7 +22,7 @@ const App = Vue.createApp({
     computed:{
         calculatedChange(){
             const change = this.changes.find( change => change.currency_from==this.from && change.currency_to==this.to )
-            return parseFloat( change.rate ) * this.mount;
+            return parseFloat( change.type ? change.rate : 1/change.rate ) * this.mount;
         },
         maxAvalaible(){
             return this.currencies.find( currency => currency.id==this.to )?.founds || 0
@@ -53,7 +53,7 @@ const App = Vue.createApp({
                     headers:{
                         'Content-Type':'application/x-www-form-urlencoded'
                     },
-                    body:`action=create_operation&exchange_id=${id}&mount=${this.mount}`,
+                    body:`action=create_operation&exchange_id=${id}&mount=${this.mount}&to_pay=${this.calculatedChange}`,
                 })
                 const result = await response.json()
                 console.log( result )

@@ -18,7 +18,7 @@ class ExchangesCurrencies {
         add_action( 'admin_menu', [__CLASS__, 'admin_menu']);
         add_action( 'wp_ajax_update_currency', [__CLASS__, 'action_update_currency']);
         add_action( 'wp_ajax_add_currency', [__CLASS__, 'action_add_currency']);
-        add_action( 'wp_ajax_update_rate', [__CLASS__, 'action_update_rate']);
+        add_action( 'wp_ajax_update_change', [__CLASS__, 'action_update_change']);
         add_action( 'wp_ajax_add_change', [__CLASS__, 'action_add_change']);
         add_shortcode( 'exchange-app', [__CLASS__, 'client_app']);
         add_action( 'wp_ajax_create_operation', [__CLASS__, 'action_create_operation']);
@@ -47,6 +47,7 @@ class ExchangesCurrencies {
         $request = [
             "exchange_id" => $_POST["exchange_id"],
             "mount" => $_POST["mount"],
+            "to_pay" => $_POST["to_pay"],
             "reference" => "",
             "approved_by" => 0,
             "created_at" => date("Y-m-d")
@@ -81,6 +82,7 @@ class ExchangesCurrencies {
             "currency_from" => $_POST['currency_from'],
             "currency_to" => $_POST['currency_to'],
             "rate" => $_POST['rate'],
+            "type" => $_POST['type']=='1',
             "created_at" => date("Y-m-d")
         ];
         $Change = new ExchangesDB('ex_exchanges');
@@ -89,11 +91,15 @@ class ExchangesCurrencies {
         die();
     }
 
-    public static function action_update_rate() {
+    public static function action_update_change() {
         $exchange_id = $_POST['exchange_id'];
         $rate = $_POST['rate'];
+        $type = $_POST['type']=='1';
         $Change = new ExchangesDB('ex_exchanges');
-        $Change->set($exchange_id, ["rate" => $rate ]);
+        $Change->set($exchange_id, [
+            "rate" => $rate,
+            "type" => $type
+        ]);
         echo json_encode([
             "exchange_id" => $exchange_id,
             "rate" => $rate
